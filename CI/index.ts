@@ -8,7 +8,7 @@ const SUPABASE_URL = process.env.SUPABASE_URL || '';
 const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY || '';
 const SUPABASE_BUCKET = process.env.SUPABASE_BUCKET || '';
 const DELETE_OLDER_BACKUPS = process.env.DELETE_OLDER_BACKUPS || 'true';
-const DELETE_OLDER_BACKUPS_DAYS = process.env.DELETE_OLDER_BACK
+const DELETE_OLDER_BACKUPS_DAYS = process.env.DELETE_OLDER_BACKUPS_DAYS
 const SUPABASE_FOLDER_NAME = process.env.SUPABASE_FOLDER_NAME || '';
 
 const getBackupName = () => {

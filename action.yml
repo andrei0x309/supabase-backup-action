@@ -7,7 +7,7 @@ branding:
 
 inputs:
   supabase-postgre-url: 
-    description: 'used to dump DB, example: postgresql://postgres:[YOUR-PASSWORD]@db.<ref>.supabase.co:5432/postgres'
+    description: 'used to dump DB, example: postgresql://postgres.lcspcmmpolegvalxkfsu:[YOUR-PASSWORD]@aws-0-us-east-1.pooler.supabase.com:6543/postgres'
     required: true
   supabase-url: 
     description: 'used to identify your project, example: https://lcspcmmpolegvalxkfsu.supabase.co'
@@ -35,31 +35,6 @@ inputs:
 
 runs:
   using: 'composite'
-
-    # runs-on: ubuntu-latest
-    # env:
-    #   supabase_db_url: ${{ secrets.SUPABASE_DB_URL }}   # For example: postgresql://postgres:[YOUR-PASSWORD]@db.<ref>.supabase.co:5432/postgres
-    # steps:
-    #   - uses: actions/checkout@v2
-    #   - uses: supabase/setup-cli@v1
-    #     with:
-    #       version: latest
-    #   - name: Backup roles
-    #     run: supabase db dump --db-url "$supabase_db_url" -f roles.sql --role-only
-    #   - name: Backup schema
-    #     run: supabase db dump --db-url "$supabase_db_url" -f schema.sql
-    #   - name: Backup data
-    #     run: supabase db dump --db-url "$supabase_db_url" -f data.sql --data-only --use-copy
-
-  # image: './Dockerfile'
-  # env:
-  #   SUPABASE_POSTRGE_URL: ${{ inputs.supabase-postgre-url }}
-  #   SUPABASE_URL: ${{ inputs.supabase-url }}
-  #   SUPABASE_SERVICE_KEY: ${{ inputs.supabase-service-key }}
-  #   SUPABASE_BUCKET: ${{ inputs.supabase-bucket }}
-  #   DELETE_OLDER_BACKUPS: ${{ inputs.delete-older-backups }}
-  #   DELETE_OLDER_BACKUPS_DAYS: ${{ inputs.delete-older-backups-days }}
-  #   SUPABASE_FOLDER_NAME: ${{ inputs.folder-name }}
   steps:
   - name: 'Checkout'
     uses: actions/checkout@v2
@@ -91,14 +66,20 @@ runs:
 
   - name: 'Backup roles'
     shell: bash
+    env:
+        SUPABASE_POSTRGE_URL: ${{ inputs.supabase-postgre-url }}
     run: supabase db dump --db-url "$SUPABASE_POSTRGE_URL" -f data/roles.sql --role-only
 
   - name: 'Backup schema'
+    env:
+        SUPABASE_POSTRGE_URL: ${{ inputs.supabase-postgre-url }}
     shell: bash
     run: supabase db dump --db-url "$SUPABASE_POSTRGE_URL" -f data/schema.sql
   
   - name: 'Backup data'
     shell: bash
+    env:
+        SUPABASE_POSTRGE_URL: ${{ inputs.supabase-postgre-url }}
     run: supabase db dump --db-url "$SUPABASE_POSTRGE_URL" -f data/data.sql --data-only --use-copy
   
   - name: 'Upload to Supabase Storage'
