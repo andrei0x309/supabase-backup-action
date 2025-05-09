@@ -1,0 +1,47 @@
+name: CI / Test Action
+
+on:
+  workflow_dispatch:
+    input:
+      supabase-postgre-url: 
+        description: 'used to dump DB, example: postgresql://postgres:[YOUR-PASSWORD]@db.<ref>.supabase.co:5432/postgres'
+        required: true
+      supabase-url: 
+        description: 'used to identify your project, example: https://lcspcmmpolegvalxkfsu.supabase.co'
+        required: true
+      supabase-service-key: 
+        description: 'used to upload to you bucket, must be service_role key not anon example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9....'
+        required: true
+      supabase-bucket:
+        description: 'Bucket name, example: "blog-db-backup"'
+        required: true
+      delete-older-backups:
+        description: 'Delete older backups'
+        required: false
+        default: 'true'
+      delete-older-backups-days:
+        description: 'Number of days to keep backups'
+        required: false
+        default: '7'
+      folder-name:
+        description: 'Folder name, example: "blog-db-backup", if not provided it will place baackups in root folder'
+        required: false
+        default: ''
+        
+jobs:
+  backup:
+    name: Supabase Backup to Storage
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 'Run Action'
+        uses: ./
+        with:
+          supabase-postgre-url: ${{ github.event.inputs.supabase-postgre-url }}
+          supabase-url: ${{ github.event.inputs.supabase-url }}
+          supabase-service-key: ${{ github.event.inputs.supabase-service-key }}
+          supabase-bucket: ${{ github.event.inputs.supabase-bucket }}
+          delete-older-backups: ${{ github.event.inputs.delete-older-backups }}
+          delete-older-backups-days: ${{ github.event.inputs.delete-older-backups-days }}
+          folder-name: ${{ github.event.inputs.folder-name }}
