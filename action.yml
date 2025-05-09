@@ -51,7 +51,7 @@ runs:
   # --- Add step to install dependencies using Bun ---
   - name: 'Install Dependencies'
     shell: bash
-    run: bun install
+    run: bun install $GITHUB_ACTION_PATH
   # -------------------------------------------------
 
   - name: 'Setup Supabase CLI'
@@ -92,7 +92,7 @@ runs:
       DELETE_OLDER_BACKUPS_DAYS: ${{ inputs.delete-older-backups-days }}
       SUPABASE_FOLDER_NAME: ${{ inputs.folder-name }}
     shell: bash
-    run: bun run ./CI/index.ts
+    run: bun run $GITHUB_ACTION_PATH/CI/index.ts
   
 
   

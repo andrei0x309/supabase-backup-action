@@ -22,7 +22,7 @@ jobs:
       - uses: actions/checkout@v3
         with:
           ref: ${{ github.head_ref }}
-      - uses: andrei0x309/supabase-backup-action@v1.1.5
+      - uses: andrei0x309/supabase-backup-action@v1.1.6
         with:
           supabase-postgre-url: ${{ secrets.SUPABASE_POSTRGE_URL }}
           supabase-url: ${{ secrets.SUPABASE_URL }}
