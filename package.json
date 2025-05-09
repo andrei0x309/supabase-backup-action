@@ -1,26 +1,14 @@
 {
   "name": "supabase-backup-action",
   "version": "1.1.4",
-  "description": "A template for creating a library with Bun, with support for TS, build config, release script, windows support, and more.",
+  "description": "A GitHub Action to backup Supabase database to supa storage, it can also delete old backups.",
   "type": "module",
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
-    }
-  },
   "scripts": {
-    "start": "bun run ./src/index.ts",
     "degit": "bun run ./lib-tools/cli/degit.ts",
     "generate-license": "bun run ./lib-tools/cli/generate-license.ts",
-    "build": "bun run ./lib-tools/scripts/build.ts",
     "dev": "bun run ./lib-tools/scripts/dev.ts",
     "new-version": "bun run ./lib-tools/scripts/release-script.ts",
-    "npm-publish": "npm publish",
-    "release": "bun run build && bun run new-version && bun run npm-publish"
+    "release": "bun run new-version"
   },
   "files": [
     "dist"
@@ -34,12 +22,12 @@
     "bun backup database"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/andrei0x309/bun-lib-template-starter#readme",
+  "homepage": "https://github.com/andrei0x309/supabase-backup-actionr#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/andrei0x309bun-lib-template-starter.git"
+    "url": "git+https://github.com/andrei0x309/supabase-backup-action.git"
   },
-  "bugs": "https://github.com/andrei0x309/bun-lib-template-starter/issues",
+  "bugs": "https://github.com/andrei0x309/supabase-backup-action/issues",
   "author": "Andrei O (andrei0x309)",
   "devDependencies": {
     "@types/archiver": "^6.0.3",

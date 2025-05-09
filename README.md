@@ -1,51 +1,67 @@
-# bun-lib-template-starter - A template for creating a library with bun
+# supabase-backup-action
+
+## Description
+
+This is an Github action that can be used to backup your Supabase database, upload the backup to Supabase Storage and delete older backups.
+For small websites should run under 2 minutes, but I haven't tested it with large databases.
 
 ## Getting Started
 
-Click the [Use this template](https://github.com/andrei0x309/bun-lib-template-starter/generate) button to create a new repository with the contents starter.
+Create a workflow file in `.github/workflows/` (e.g. `backup.yml`) with the following content:
 
-OR
+```yaml
+name: Supa-Database-Backup
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 1 */3 * *' # At 01:00 on every 3rd day-of-month.
+jobs:   
+  run_db_backup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.head_ref }}
+      - uses: andrei0x309/supabase-backup-action@v1
+        with:
+          supabase-postgre-url: ${{ secrets.SUPABASE_POSTRGE_URL }}
+          supabase-url: ${{ secrets.SUPABASE_URL }}
+          supabase-service-key: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          supabase-bucket: ${{ secrets.SUPABASE_BUCKET }}
+          delete-older-backups: 'true'
+          delete-older-backups-days: '7'
+          folder-name: 'backups'
+```
 
-Run `bun create andrei0x309/bun-lib-template-starter  ./my-lib`.
+Link to a workflow file used by my supa blog: [backup.yml](https://github.com/andrei0x309/svelte-kit-supa-blog/blob/main/.github/workflows/backup.yml)
 
-## Usage
+Be sure to add the secrets to your repository before adding the workflow file.
+All necessary secrets are listed below in the `Prerequisites` section and can be found in the Supabase dashboard in different places, dashbord may provide different connect URIs, be sure to use the correct one()
 
-Change `lib.config.ts` to your needs.
+### Prerequisites
 
-Run `bun run build` to build the library.
+- Supabase account
+- Supabase database
+- Supabase service key (not the anon key)
+- Supabase Postgre URL
 
-## Features
+### Secrets Examples (replace `<YOUR-PASSWORD>` with your password and `<YOUR-PROJECT>` with your project name):
 
-- [x] Almost no dependencies.
-- [x] Generating types with rust.
-- [x] Degit command included.
-- [x] License generation command included
-- [x] Automatic version bump.
-- [x] Release command included.
-- [x] Automatic tag generation.
-- [x] Configurable by `lib.config.ts`
-- [x] Cross-OS support.
-- [x] Only uses Bun bundler to bundle the library. (note Bun bundler only supports ESM modules)
-- [x] Option to omit types declaration generation (default is false)
-- [x] Option auto fill exports in package.json (default is true)
+- Supabase Postgre URL: `postgresql://postgres.<YOUR-PROJECT>:<YOUR-PASSWORD>&@aws-0-us-east-1.pooler.supabase.com:6543/postgres`
+- Supabase URL: `https://<YOUR-PROJECT>.supabase.co`
+- Supabase Service Key: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0` (this is a dummy key, replace it with your own)
+- Supabase Bucket: `supabase-backups` (this is the name of the bucket, you can change it to whatever you want)
 
-## Notes
+### Notes
 
-- Creating type declarations without using typescript at the moment is only possible with `isolatedDeclarations` set to `true` in tsconfig.json,
-which means all types must be declared explicitly in your code.
+- If the bucket does not exist, it will be created.
+- If the folder does not exist, it will be created, if is not provided the backups will be stored in the root of the bucket.
+- You can change the backup frequency by changing the cron expression in the `schedule` yaml section, for many cases once on 3 days is enough, but you can change it to what you need.
 
-- the folder `lib-tools` will not be included in the library, and is meant as a helper for the library creator.
+### Dependencies that the action uses
 
-- ATM This template is pretty basic but works with any OS, uses only bun bundler, and only supports ESM modules, intended for modern JS, I might add more features, if you think it's missing something create an issue
-
-- All config options in `lib.config.ts` are documented in `/lib-tools/types/config-type.ts`
-
-## CHANGELOG
-
-### 2025-03-29
-  
-- Initial release
-
-## License
-
-MIT
+- Supabase CLI
+- Composite Actions
+- Postgres CLI
+- Supabase Data API
+- Bun
