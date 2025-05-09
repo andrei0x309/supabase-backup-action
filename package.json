@@ -1,6 +1,6 @@
 {
   "name": "supabase-backup-action",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "description": "A GitHub Action to backup Supabase database to supa storage, it can also delete old backups.",
   "type": "module",
   "scripts": {
