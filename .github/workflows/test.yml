@@ -2,7 +2,7 @@ name: CI / Test Action
 
 on:
   workflow_dispatch:
-    input:
+    inputs:
       supabase-postgre-url: 
         description: 'used to dump DB, example: postgresql://postgres:[YOUR-PASSWORD]@db.<ref>.supabase.co:5432/postgres'
         required: true
