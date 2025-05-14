@@ -1,5 +1,5 @@
 name: 'Supabase Backup to Storage'
-description: 'Auto Stats Action enables generation of repository statistics like total number of files, number of words in every file, etc.'
+description: 'Action to backup your Supabase DB, upload the backup to Supabase Storage, and delete older backups. Super easy to set up.'
 
 branding:
   icon: database
